@@ -106,4 +106,47 @@ module.exports = {
             data: department.rows[0],
         };
     },
+
+    async getUsersByDepId(req){
+        const query = `
+        SELECT 
+            users.*, 
+            departments.name AS department_name
+        FROM 
+            users
+        LEFT JOIN 
+            departments ON users.department_id = departments.id
+        WHERE 
+            users.department_id = $1
+        ORDER BY 
+            users.id
+        `;
+
+        const { id } = req.body;
+        const users = await client.query(query, [id]);
+        return {
+            success: true,
+            message: "Users found",
+            method: "getUsersByDepId",
+            data: users.rows,
+            total: users.rowCount,
+        };
+    },
+
+    async transferUsers(req){
+        const query = `
+        UPDATE users SET department_id = $1 WHERE id = ANY($2)
+        RETURNING *
+        `;
+
+        const { departmentId, users } = req.body;
+        const _users = await client.query(query, [departmentId, users]);
+        return {
+            success: true,
+            message: "Users transferred",
+            method: "transferUsers",
+            data: _users.rows,
+            total: _users.rowCount,
+        };
+    }
 }

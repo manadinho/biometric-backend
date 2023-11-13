@@ -7,6 +7,7 @@ const rolesController = require("./server/controller/roles-controller");
 const authController = require("./server/controller/auth-controller");
 const timetablesController = require("./server/controller/timetables-controller");
 const departmentsController = require("./server/controller/deprtments-controller");
+const shiftController = require("./server/controller/shift-controller");
 
 const controllers = {
   auth: authController,
@@ -14,6 +15,7 @@ const controllers = {
   roles: rolesController,
   timetables: timetablesController,
   departments: departmentsController,
+  shifts: shiftController,
 };
 
 const port = 1000;
